@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "142093116422",
+    "firebase_url": "https://finki-recipe-app.firebaseio.com",
+    "project_id": "finki-recipe-app",
+    "storage_bucket": "finki-recipe-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142093116422:android:866ae454f88532cf9b4f87",
+        "android_client_info": {
+          "package_name": "com.finki.recipeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142093116422-2gq43vj7ao84hsenvghejt9d5l1kv25i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finki.recipeapp",
+            "certificate_hash": "864090dc6a7d28da0e803f02088a49e83354e4e9"
+          }
+        },
+        {
+          "client_id": "142093116422-vtm575gough36pquqc9ti63urg7ft9du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH4XuV7kcXE-jTA9FLaD7oUZ-ehoTKoXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142093116422-vtm575gough36pquqc9ti63urg7ft9du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
