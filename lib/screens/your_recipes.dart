@@ -1,13 +1,11 @@
 import 'dart:math';
 
-import 'package:finkirecipeapp/dummy_data.dart';
 import 'package:finkirecipeapp/new_list.dart';
-import 'package:finkirecipeapp/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
 import './all_recipes.dart';
 import './favorite_recipes.dart';
 import '../blueprints/recipe.dart';
-import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipesScreen extends StatefulWidget {
   static const routeName = '/recipes_screen';
@@ -26,9 +24,67 @@ class _RecipesScreenState extends State<RecipesScreen> {
   int _selectedPageIndex = 0;
   List<Widget> _pages;
 
-  void _startAddNewRecipe(BuildContext ctx) {
-    List<Recipe> favoriteRecipes = [];
+  void _saveData(Recipe r) async {
+    final prefs = await SharedPreferences.getInstance();
+    addedrecipes.add(r);
+    List<String> finaleList = [];
+    String s = '';
+    for (int i = 0; i < addedrecipes.length; i++) {
+      s = addedrecipes[i].id +
+          '@' +
+          addedrecipes[i].title +
+          '@' +
+          addedrecipes[i].ingredients.toString() +
+          '@' +
+          addedrecipes[i].steps.toString() +
+          '@' +
+          addedrecipes[i].affordability.toString() +
+          '@' +
+          addedrecipes[i].complexity.toString() +
+          '@' +
+          addedrecipes[i].duration.toString();
+      finaleList[i] = s;
+    }
 
+    prefs.setStringList('recipes', finaleList);
+  }
+
+  _readData() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final recipes = prefs.getStringList('recipes');
+
+    if (recipes.isEmpty)
+      return null;
+    else
+      return recipes;
+  }
+
+  List<Recipe> _readDataFinal() {
+    if (_readData() == null)
+      return null;
+    else {
+      List<String> strings = _readData();
+      List<Recipe> recipes = [];
+
+      for (int i = 0; i < strings.length; i++) {
+        var parts = strings[i].split('@');
+        Recipe r = new Recipe(
+          id: parts[0],
+          title: parts[1],
+          ingredients: parts[2].split(','),
+          steps: parts[3].split(','),
+          affordability: Affordability.Affordable,
+          complexity: Complexity.Simple,
+          duration: int.parse(parts[6]),
+        );
+        recipes.add(r);
+      }
+      return recipes;
+    }
+  }
+
+  void _startAddNewRecipe(BuildContext ctx) {
     String titleInput;
     List<String> ingredientsInput;
     List<String> stepsInput;
@@ -61,6 +117,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
             favorited: false,
           );
           addedrecipes.add(r1);
+          _saveData(r1);
+          addToAdded();
           print(r1);
         });
         Navigator.pop(context);
@@ -69,12 +127,14 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
     showModalBottomSheet(
       context: ctx,
+      isScrollControlled: true,
       builder: (_) {
         return GestureDetector(
           onTap: () {},
           child: Card(
             elevation: 5,
             child: Container(
+              height: 550,
               padding: EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -133,6 +193,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
       _selectedPageIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,8 +232,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
       body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.blue,
+        selectedItemColor: Colors.black,
         selectedFontSize: 20,
         type: BottomNavigationBarType.shifting,
         currentIndex: _selectedPageIndex,

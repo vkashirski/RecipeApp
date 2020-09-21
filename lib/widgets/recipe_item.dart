@@ -1,4 +1,4 @@
-import 'package:finkirecipeapp/dummy_data.dart';
+
 import 'package:flutter/material.dart';
 import '../new_list.dart';
 import '../screens/recipe_screen.dart';
@@ -101,7 +101,8 @@ class _RecipeItemState extends State<RecipeItem> {
                 color: Colors.amber[50],
               ),
               child: Container(
-                height: 35,
+                width: 300,
+                height: 33,
                 padding: EdgeInsets.all(6),
                 child: Text('${widget.title}, $complexityText',
                     style: TextStyle(fontSize: 16)),
